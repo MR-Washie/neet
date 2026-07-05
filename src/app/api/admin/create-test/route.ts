@@ -10,7 +10,7 @@ export async function POST(req: Request) {
     const { title, duration, questions } = body;
 
     // Strict validation mapping
-    if (!title || !duration || !questions || !Array.isArray(questions) || questions.length === 0) {
+    if (!title || !duration || !questions || !Array.isArray(questions)) {
       return NextResponse.json(
         { error: 'Missing parameters. Ensure test title and question blocks are filled out correctly.' },
         { status: 400 }
@@ -22,7 +22,7 @@ export async function POST(req: Request) {
       title,
       duration: Number(duration),
       questions: questions.map((q) => ({
-        questionText: q.questionText,
+        imageUrl: q.imageUrl,
         options: q.options,
         correctOptionIndex: Number(q.correctOptionIndex),
         subject: q.subject,
