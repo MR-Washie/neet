@@ -438,66 +438,67 @@ function StudentTestsMarketplaceContent() {
         <div className="flex-1 flex overflow-hidden w-full relative bg-slate-200">
           
           {/* Main Body Column Pane */}
-          <div className="flex-1 flex flex-col justify-between bg-white overflow-y-auto w-full h-full">
-            <div className="p-4 sm:p-6 md:p-10 max-w-4xl w-full mx-auto flex-1">
-              {/* Toast for last question notice */}
-              {lastQuestionNotice && (
-                <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50">
-                  <div className="px-4 py-2 bg-yellow-50 border border-yellow-200 text-yellow-800 rounded-lg shadow">This is the last question.</div>
-                </div>
-              )}
-              
-              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center border-b border-slate-200 pb-3 mb-4 sm:mb-6 gap-2">
-                <span className="text-[10px] sm:text-xs font-black bg-blue-50 text-blue-800 border border-blue-200 px-2.5 py-1 rounded-lg uppercase tracking-wide self-start">
-                  Section: {activeQuestion.subject || 'General Pattern'}
-                </span>
-                <span className="text-xs font-bold text-slate-500">
-                  Question Number: <strong className="text-slate-900 text-sm font-black">{currentIdx + 1}</strong> of {totalCount}
-                </span>
-              </div>
-
-              <div className="mb-6 sm:mb-8">
-                {activeQuestion.imageUrl ? (
-                  <div className="flex justify-center">
-                    <img
-                      src={activeQuestion.imageUrl}
-                      alt={`Question ${currentIdx + 1} visual`}
-                      className="w-full max-w-2xl max-h-[420px] object-contain rounded-xl border border-slate-200 shadow-sm bg-slate-50"
-                    />
+          <div className="flex-1 flex flex-col bg-white w-full h-full overflow-hidden">
+            <div className="flex-1 overflow-y-auto">
+              <div className="p-4 sm:p-6 md:p-10 max-w-4xl w-full mx-auto">
+                {/* Toast for last question notice */}
+                {lastQuestionNotice && (
+                  <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50">
+                    <div className="px-4 py-2 bg-yellow-50 border border-yellow-200 text-yellow-800 rounded-lg shadow">This is the last question.</div>
                   </div>
-                ) : (
-                  <p className="text-sm sm:text-base md:text-lg font-bold text-slate-900 leading-relaxed whitespace-pre-wrap">
-                    No image provided for this question.
-                  </p>
                 )}
-              </div>
+                
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center border-b border-slate-200 pb-3 mb-4 sm:mb-6 gap-2">
+                  <span className="text-[10px] sm:text-xs font-black bg-blue-50 text-blue-800 border border-blue-200 px-2.5 py-1 rounded-lg uppercase tracking-wide self-start">
+                    Section: {activeQuestion.subject || 'General Pattern'}
+                  </span>
+                  <span className="text-xs font-bold text-slate-500">
+                    Question Number: <strong className="text-slate-900 text-sm font-black">{currentIdx + 1}</strong> of {totalCount}
+                  </span>
+                </div>
 
-              <div className="space-y-2.5 sm:space-y-3">
-                {activeQuestion.options.map((opt, i) => {
-                  const isChosen = selectedAnswers[qId] === i;
-                  return (
-                    <button
-                      key={i} 
-                      onClick={() => setSelectedAnswers({ ...selectedAnswers, [qId]: i })}
-                      className={`w-full p-3.5 sm:p-4 text-left text-xs sm:text-sm font-semibold rounded-xl border transition-all flex items-center gap-3 sm:gap-4 ${
-                        isChosen 
-                          ? 'border-blue-600 bg-blue-50 text-blue-900 ring-1 ring-blue-600 shadow-sm' 
-                          : 'border-slate-200 bg-slate-50/50 hover:bg-slate-100 text-slate-700'
-                      }`}
-                    >
-                      <span className={`w-5 h-5 sm:w-6 sm:h-6 rounded-full flex-shrink-0 flex items-center justify-center text-xs font-black transition-colors ${isChosen ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-500'}`}>
-                        {String.fromCharCode(65 + i)}
-                      </span>
-                      <span className="break-words w-full">{opt}</span>
-                    </button>
-                  );
-                })}
-              </div>
+                <div className="mb-6 sm:mb-8">
+                  {activeQuestion.imageUrl ? (
+                    <div className="flex justify-center">
+                      <img
+                        src={activeQuestion.imageUrl}
+                        alt={`Question ${currentIdx + 1} visual`}
+                        className="w-full max-w-2xl max-h-[420px] object-contain rounded-xl border border-slate-200 shadow-sm bg-slate-50"
+                      />
+                    </div>
+                  ) : (
+                    <p className="text-sm sm:text-base md:text-lg font-bold text-slate-900 leading-relaxed whitespace-pre-wrap">
+                      No image provided for this question.
+                    </p>
+                  )}
+                </div>
 
+                <div className="space-y-2.5 sm:space-y-3 pb-4">
+                  {activeQuestion.options.map((opt, i) => {
+                    const isChosen = selectedAnswers[qId] === i;
+                    return (
+                      <button
+                        key={i} 
+                        onClick={() => setSelectedAnswers({ ...selectedAnswers, [qId]: i })}
+                        className={`w-full p-3.5 sm:p-4 text-left text-xs sm:text-sm font-semibold rounded-xl border transition-all flex items-center gap-3 sm:gap-4 ${
+                          isChosen 
+                            ? 'border-blue-600 bg-blue-50 text-blue-900 ring-1 ring-blue-600 shadow-sm' 
+                            : 'border-slate-200 bg-slate-50/50 hover:bg-slate-100 text-slate-700'
+                        }`}
+                      >
+                        <span className={`w-5 h-5 sm:w-6 sm:h-6 rounded-full flex-shrink-0 flex items-center justify-center text-xs font-black transition-colors ${isChosen ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-500'}`}>
+                          {String.fromCharCode(65 + i)}
+                        </span>
+                        <span className="break-words w-full">{opt}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
             </div>
 
             {/* Responsive Actions Navigation Footer */}
-            <div className="bg-slate-100 border-t border-slate-200 p-3 sm:px-6 sm:py-4 flex flex-col sm:flex-row gap-3 justify-between items-center shadow-inner mt-auto">
+            <div className="sticky bottom-0 z-20 shrink-0 bg-slate-100/95 border-t border-slate-200 p-3 sm:px-6 sm:py-4 flex flex-col sm:flex-row gap-3 justify-between items-center shadow-inner backdrop-blur-sm">
               <div className="flex gap-2 w-full sm:w-auto">
                 <button
                   onClick={handleMarkForReviewAndNext}
@@ -870,102 +871,6 @@ function StudentTestsMarketplaceContent() {
           })}
         </div>
       )}
-
-      {/* HISTORICAL LEDGER: Table structures turn into modern card nodes on touch interfaces and small mobile layouts */}
-      <div className="bg-white border border-slate-200 rounded-2xl sm:rounded-3xl shadow-sm p-4 sm:p-6">
-        {/* <h2 className="text-xs sm:text-sm font-black text-slate-900 uppercase tracking-wider mb-1">Authenticated Candidate History Ledger</h2>
-        <p className="text-[11px] sm:text-xs text-slate-500 mb-4">System architecture interface audit track listing persistent execution records.</p> */}
-
-        {!session ? (
-          <div className="p-6 bg-slate-50 text-center rounded-xl text-xs font-bold text-slate-500">
-            System Notification: An active authenticated tracking session state context is required to read telemetry records.
-          </div>
-        ) : history.length === 0 ? (
-          <div className="p-8 text-center text-xs font-bold text-slate-400">
-            No historical records discovered linked to the current unique credential array identifier.
-          </div>
-        ) : (
-          <>
-            {/* Desktop and Tablet UI Representation */}
-            {/* <div className="hidden md:block overflow-x-auto">
-              <table className="w-full text-left border-collapse">
-                <thead>
-                  <tr className="border-b border-slate-100 text-[10px] font-black text-slate-400 uppercase tracking-wider">
-                    <th className="py-3 px-4">Evaluation Asset Title Target</th>
-                    <th className="py-3 px-4">Aggregate Score Parameters</th>
-                    <th className="py-3 px-4">Accuracy Scale</th>
-                    <th className="py-3 px-4">Execution Timestamp</th>
-                    <th className="py-3 px-4 text-right">Records Action Map</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100 text-xs font-semibold text-slate-700">
-                  {history.map((record) => (
-                    <tr key={record._id} className="hover:bg-slate-50/60 transition-colors">
-                      <td className="py-3.5 px-4 font-bold text-slate-900">{record.testTitle}</td>
-                      <td className="py-3.5 px-4">
-                        <span className={`font-black ${record.totalMarks >= 0 ? 'text-emerald-600' : 'text-rose-600'}`}>
-                          {record.totalMarks}
-                        </span>
-                        <span className="text-slate-400 font-normal"> / {record.maxPossibleMarks}</span>
-                      </td>
-                      <td className="py-3.5 px-4 text-blue-600 font-bold">
-                        {record.attemptedCount > 0 ? Math.round((record.correctAnswers / record.attemptedCount) * 100) : 0}%
-                      </td>
-                      <td className="py-3.5 px-4 text-slate-400 text-[11px]">
-                        {new Date(record.attemptedAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit' })}
-                      </td>
-                      <td className="py-3.5 px-4 text-right">
-                        <button 
-                          onClick={() => inspectLegacyAnalysisNode(record)}
-                          className="text-[11px] font-black text-blue-600 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-lg transition-colors"
-                        >
-                          Inspect Metrics
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div> */}
-
-            {/* Mobile Card Framework Representation */}
-            {/* <div className="block md:hidden space-y-3">
-              {history.map((record) => (
-                <div key={record._id} className="border border-slate-100 rounded-xl p-4 bg-slate-50/40 space-y-2.5">
-                  <div className="flex justify-between items-start gap-2">
-                    <h4 className="text-xs font-black text-slate-900 line-clamp-2">{record.testTitle}</h4>
-                    <span className="text-[10px] text-slate-400 font-medium flex-shrink-0">
-                      {new Date(record.attemptedAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
-                    </span>
-                  </div>
-                  
-                  <div className="grid grid-cols-2 gap-2 text-[11px] border-t border-b border-slate-100/80 py-2 my-1">
-                    <div>
-                      <p className="text-[9px] uppercase font-black text-slate-400 tracking-wider">Aggregate Score</p>
-                      <p className={`font-black ${record.totalMarks >= 0 ? 'text-emerald-600' : 'text-rose-600'}`}>
-                        {record.totalMarks} <span className="text-slate-400 font-normal">/ {record.maxPossibleMarks}</span>
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-[9px] uppercase font-black text-slate-400 tracking-wider">Accuracy Factor</p>
-                      <p className="text-blue-600 font-black">
-                        {record.attemptedCount > 0 ? Math.round((record.correctAnswers / record.attemptedCount) * 100) : 0}%
-                      </p>
-                    </div>
-                  </div>
-
-                  <button 
-                    onClick={() => inspectLegacyAnalysisNode(record)}
-                    className="w-full text-center py-2 bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-black rounded-lg transition-colors uppercase tracking-wider"
-                  >
-                    Inspect Matrix Metrics
-                  </button>
-                </div>
-              ))}
-            </div> */}
-          </>
-        )}
-      </div>
 
     </div>
   );
