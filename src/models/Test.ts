@@ -31,7 +31,7 @@ import mongoose, { Schema, Document, model, models } from 'mongoose';
 
 // Single individual sub-question entity layout
 interface IQuestion {
-  questionText: string;
+  imageUrl: string;
   options: string[];
   correctOptionIndex: number;
   subject: string;
@@ -47,7 +47,7 @@ export interface ITest extends Document {
 }
 
 const QuestionSchema = new Schema<IQuestion>({
-  questionText: { type: String, required: true },
+  imageUrl: { type: String, required: true},
   options: { type: [String], required: true, validate: [arrayLimit, 'Options count must be exactly 4'] },
   correctOptionIndex: { type: Number, required: true, min: 0, max: 3 },
   subject: { type: String, required: true, enum: ['Biology', 'Physics', 'Chemistry'] },

@@ -1,112 +1,10 @@
 
-// import Link from 'next/link';
-
-// export default function HomePage() {
-//   return (
-//     <div className="bg-slate-50 min-h-screen flex flex-col justify-between">
-      
-//       {/* HERO SECTION */}
-//       <section className="relative overflow-hidden py-20 lg:py-32 bg-gradient-to-b from-white to-slate-50">
-//         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-//           <div className="text-center max-w-3xl mx-auto">
-            
-//             {/* Banner Tag */}
-//             <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 mb-6 border border-blue-100">
-//               🚀 Mission NEET 2027 Tracking Active
-//             </span>
-
-//             {/* Main Catchy Heading */}
-//             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight leading-none mb-6">
-//               Crack NEET with India's Most <br />
-//               <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-//                 Reliable Testing Engine
-//               </span>
-//             </h1>
-
-//             {/* Subtext description */}
-//             <p className="text-lg text-slate-600 mb-10 leading-relaxed">
-//               Get access to high-yield mock tests, instant analytical insights, and personalized revision tracking simulated exactly on NTA metrics.
-//             </p>
-
-//             {/* CTA Action Buttons */}
-//             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-//               <Link
-//                 href="/tests"
-//                 className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 border border-transparent text-base font-bold rounded-2xl text-white bg-blue-600 hover:bg-blue-700 shadow-xl shadow-blue-100 transition-all active:scale-[0.98]"
-//               >
-//                 Start Free Mock Test
-//               </Link>
-//               <Link
-//                 href="/analytics"
-//                 className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 border border-slate-200 text-base font-semibold rounded-2xl text-slate-700 bg-white hover:bg-slate-50 shadow-sm transition-all active:scale-[0.98]"
-//               >
-//                 Explore Analytics Dashboard
-//               </Link>
-//             </div>
-
-//           </div>
-//         </div>
-
-//         {/* Decorative Background Elements */}
-//         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[350px] bg-blue-400/10 blur-[120px] rounded-full pointer-events-none -z-10" />
-//       </section>
-
-//       {/* CORE FEATURES INDEX */}
-//       <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-//         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          
-//           {/* Feature 1 */}
-//           <div className="bg-white p-8 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow">
-//             <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center font-bold text-xl mb-6">
-//               📊
-//             </div>
-//             <h3 className="text-xl font-bold text-slate-900 mb-2">Precision Analytics</h3>
-//             <p className="text-slate-600 text-sm leading-relaxed">
-//               Identify weak subject clusters down to explicit sub-topics. Know exactly where you lose marks.
-//             </p>
-//           </div>
-
-//           {/* Feature 2 */}
-//           <div className="bg-white p-8 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow">
-//             <div className="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center font-bold text-xl mb-6">
-//               ⏱️
-//             </div>
-//             <h3 className="text-xl font-bold text-slate-900 mb-2">Real NTA Interface</h3>
-//             <p className="text-slate-600 text-sm leading-relaxed">
-//               Practice using a timer and layout environment designed to mirror the actual NEET examination engine closely.
-//             </p>
-//           </div>
-
-//           {/* Feature 3 */}
-//           <div className="bg-white p-8 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow">
-//             <div className="w-12 h-12 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center font-bold text-xl mb-6">
-//               🎯
-//             </div>
-//             <h3 className="text-xl font-bold text-slate-900 mb-2">High Yield Question Bank</h3>
-//             <p className="text-slate-600 text-sm leading-relaxed">
-//               Curated mock tests strictly mapped across modern NCERT parameters and previous years' weightage trends.
-//             </p>
-//           </div>
-
-//         </div>
-//       </section>
-
-//       {/* FOOTER */}
-//       <footer className="border-t border-slate-200 bg-white py-8 text-center text-sm text-slate-500 w-full mt-auto">
-//         <div className="max-w-7xl mx-auto px-4">
-//           &copy; {new Date().getFullYear()} NEETPrep Engine. All rights reserved. Made for absolute medical aspirants.
-//         </div>
-//       </footer>
-
-//     </div>
-//   );
-// }
-
-
 
 'use client';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+
+
 
 // Array of daily motivational quotes tailored for high-stakes competitive examinations
 const DEEPLY_MOTIVATIONAL_QUOTES = [
@@ -130,13 +28,15 @@ export default function HomePage() {
   }, []);
 
   return (
+
+    
     <div className="bg-slate-50 min-h-screen flex flex-col justify-between">
-      
+         
       {/* HERO SECTION */}
       <section className="relative overflow-hidden py-20 lg:py-32 bg-gradient-to-b from-white to-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center max-w-3xl mx-auto">
-            
+
             {/* Mission Active Tag */}
             <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-black bg-blue-50 text-blue-700 mb-6 border border-blue-100 tracking-wide uppercase">
               🚀 Mission NEET Tracking Matrix Active
@@ -197,7 +97,7 @@ export default function HomePage() {
       {/* COMPONENT FEATURES OVERVIEW GRID */}
       <section className="py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          
+
           {/* Analytics Block */}
           <div className="bg-white p-8 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-md transition-all">
             <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center font-bold text-xl mb-6">
