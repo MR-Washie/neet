@@ -6,10 +6,15 @@ export default withAuth(
     const token = req.nextauth.token;
     const isTargetAdmin = token?.email === "mdragib.mth2005@gmail.com";
     const isAdminRoute = req.nextUrl.pathname.startsWith("/admin");
+    const isLoginRoute = req.nextUrl.pathname === "/login";
 
-    // If they are attempting to view admin pages but the account doesn't match
+    // 1. If logged in and trying to access /login, redirect to home
+    if (token && isLoginRoute) {
+      return NextResponse.redirect(new URL("/", req.url));
+    }
+
+    // 2. If trying to access admin routes and NOT the admin, redirect to home
     if (isAdminRoute && !isTargetAdmin) {
-      // Redirect them cleanly to an unauthenticated landing page or main page
       return NextResponse.redirect(new URL("/", req.url));
     }
 
@@ -17,13 +22,22 @@ export default withAuth(
   },
   {
     callbacks: {
-      // Blocks users immediately if they aren't signed into any profile at all
-      authorized: ({ token }) => !!token,
+      // This protects the defined routes in the matcher.
+      // If authorized returns false, NextAuth automatically redirects to /login.
+      authorized: ({ token, req }) => {
+        const isLoginRoute = req.nextUrl.pathname === "/login";
+        
+        // If it's the login page, always allow access (so they can sign in)
+        if (isLoginRoute) return true;
+        
+        // For everything else (including /admin), they MUST be logged in
+        return !!token;
+      },
     },
   }
 );
 
-// Protect everything inside the admin folder explicitly
 export const config = {
-  matcher: ["/admin/:path*"],
+  // Apply this middleware to admin routes AND the login page
+  matcher: ["/admin/:path*", "/login"],
 };
