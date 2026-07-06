@@ -108,7 +108,7 @@ function AdminAddTestContent() {
     setImageFile(null);
     setCurrentQ({
       imageUrl: '',
-      options: ['', '', '', ''],
+      options: ['1', '2', '3', '4'],
       correctOptionIndex: 0,
       subject: currentQ.subject,
       topic: ''
