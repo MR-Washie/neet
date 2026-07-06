@@ -27,7 +27,7 @@ function AdminAddTestContent() {
   // Current working question single state
   const [currentQ, setCurrentQ] = useState<QuestionSchema>({
     imageUrl: '',
-    options: ['', '', '', ''],
+    options: ['1', '2', '3', '4'],
     correctOptionIndex: 0,
     subject: 'Physics',
     topic: ''
@@ -213,9 +213,11 @@ function AdminAddTestContent() {
               value={currentQ.subject} onChange={(e) => setCurrentQ({ ...currentQ, subject: e.target.value })}
               className="p-2.5 bg-white border border-slate-200 rounded-lg text-xs font-semibold"
             >
-              <option>Biology</option>
+              
               <option>Physics</option>
               <option>Chemistry</option>
+              <option>Zoology</option>
+              <option>Botany</option>
             </select>
             <input
               type="text" placeholder="Topic (e.g., Thermodynamics)" value={currentQ.topic}
