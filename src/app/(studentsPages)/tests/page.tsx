@@ -438,9 +438,9 @@ function StudentTestsMarketplaceContent() {
         <div className="flex-1 flex overflow-hidden w-full relative bg-slate-200">
           
           {/* Main Body Column Pane */}
-          <div className="flex-1 flex flex-col bg-white w-full h-full overflow-hidden">
-            <div className="flex-1 overflow-y-auto">
-              <div className="p-4 sm:p-6 md:p-10 max-w-4xl w-full mx-auto">
+          <div className="flex-1 flex flex-col bg-white w-full h-full overflow-hidden min-h-0">
+            <div className="flex-1 overflow-y-auto min-h-0 overscroll-contain">
+              <div className="p-4 sm:p-6 md:p-10 max-w-4xl w-full mx-auto pb-28 sm:pb-24">
                 {/* Toast for last question notice */}
                 {lastQuestionNotice && (
                   <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50">
@@ -498,7 +498,7 @@ function StudentTestsMarketplaceContent() {
             </div>
 
             {/* Responsive Actions Navigation Footer */}
-            <div className="sticky bottom-0 z-20 shrink-0 bg-slate-100/95 border-t border-slate-200 p-3 sm:px-6 sm:py-4 flex flex-col sm:flex-row gap-3 justify-between items-center shadow-inner backdrop-blur-sm">
+            <div className="sticky bottom-0 z-20 shrink-0 w-full bg-slate-100/95 border-t border-slate-200 p-3 sm:px-6 sm:py-4 flex flex-col sm:flex-row gap-3 justify-between items-center shadow-inner backdrop-blur-sm pb-[calc(0.75rem+env(safe-area-inset-bottom))] sm:pb-4">
               <div className="flex gap-2 w-full sm:w-auto">
                 <button
                   onClick={handleMarkForReviewAndNext}
