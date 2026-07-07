@@ -56,7 +56,7 @@ export async function PUT(req: Request, { params }: { params: any }) {
         title,
         duration: Number(duration),
         questions: questions.map((q: any) => ({
-          questionText: q.questionText,
+          imageUrl: q.imageUrl,
           options: q.options,
           correctOptionIndex: Number(q.correctOptionIndex),
           subject: q.subject,
