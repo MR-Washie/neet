@@ -499,7 +499,7 @@ function StudentTestsMarketplaceContent() {
 
             {/* Responsive Actions Navigation Footer */}
             <div className="sticky bottom-0 z-20 shrink-0 w-full bg-slate-100/95 border-t border-slate-200 p-3 sm:px-6 sm:py-4 flex flex-col sm:flex-row gap-3 justify-between items-center shadow-inner backdrop-blur-sm pb-[calc(0.75rem+env(safe-area-inset-bottom))] sm:pb-4">
-              <div className="flex gap-2 w-full sm:w-auto">
+              <div className="sticky flex gap-2 w-full sm:w-auto">
                 <button
                   onClick={handleMarkForReviewAndNext}
                   className="flex-1 sm:flex-none text-center px-3 sm:px-4 py-2.5 bg-indigo-50 border border-indigo-200 text-indigo-700 text-[11px] sm:text-xs font-bold rounded-lg hover:bg-indigo-100 transition-colors whitespace-nowrap"
@@ -514,7 +514,7 @@ function StudentTestsMarketplaceContent() {
                 </button>
               </div>
 
-              <div className="flex gap-2 w-full sm:w-auto">
+              <div className="sticky flex gap-2 w-full sm:w-auto">
                 <button
                   disabled={currentIdx === 0}
                   onClick={() => setCurrentIdx(currentIdx - 1)}
