@@ -19,7 +19,7 @@ interface QuestionSchema {
 interface TestSchema {
   _id: string;
   title: string;
-  duration: number; 
+  duration: number;
   questions: QuestionSchema[];
 }
 
@@ -40,27 +40,27 @@ type QuestionStatus = 'NOT_VISITED' | 'NOT_ANSWERED' | 'ANSWERED' | 'MARKED_FOR_
 
 function StudentTestsMarketplaceContent() {
   const { data: session } = useSession();
-  
+
   const [tests, setTests] = useState<TestSchema[]>([]);
   const [history, setHistory] = useState<AttemptHistoryRecord[]>([]);
   const [loading, setLoading] = useState(true);
-  
+
   const [activeTest, setActiveTest] = useState<TestSchema | null>(null);
   const [currentIdx, setCurrentIdx] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState<Record<string, number>>({});
   const [questionStatuses, setQuestionStatuses] = useState<Record<string, QuestionStatus>>({});
   const [timeLeft, setTimeLeft] = useState<number>(0);
-  
+
   // Mobile responsive layout optimization state
   const [mobilePaletteOpen, setMobilePaletteOpen] = useState<boolean>(false);
   const [lastQuestionNotice, setLastQuestionNotice] = useState<boolean>(false);
-  
+
   const [confirmationModal, setConfirmationModal] = useState<{ isOpen: boolean; testObj: TestSchema | null; isReattempt: boolean }>({
     isOpen: false,
     testObj: null,
     isReattempt: false
   });
-  
+
   const examDeadlineRef = useRef<number | null>(null);
   const [showAnalysis, setShowAnalysis] = useState<boolean>(false);
   const [currentAnalysisRecord, setCurrentAnalysisRecord] = useState<AttemptHistoryRecord | null>(null);
@@ -68,7 +68,7 @@ function StudentTestsMarketplaceContent() {
 
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const stateRef = useRef({ selectedAnswers, activeTest, showAnalysis, questionStatuses });
-  
+
   useEffect(() => {
     stateRef.current = { selectedAnswers, activeTest, showAnalysis, questionStatuses };
   }, [selectedAnswers, activeTest, showAnalysis, questionStatuses]);
@@ -163,12 +163,20 @@ function StudentTestsMarketplaceContent() {
   }, [activeTest, showAnalysis]);
 
   const initiateFreshExamEngine = (testObj: TestSchema) => {
+
+    const element = document.documentElement;
+    if (element.requestFullscreen) {
+      element.requestFullscreen().catch((err) => {
+        console.log("Fullscreen request denied or failed", err);
+      });
+    }
+
     setShowAnalysis(false);
     setCurrentAnalysisRecord(null);
     setSelectedAnswers({});
     setCurrentIdx(0);
     setMobilePaletteOpen(false);
-    
+
     const initialStatuses: Record<string, QuestionStatus> = {};
     testObj.questions.forEach((q, i) => {
       const id = q._id || String(i);
@@ -176,14 +184,14 @@ function StudentTestsMarketplaceContent() {
     });
     const firstId = testObj.questions[0]?._id || '0';
     initialStatuses[firstId] = 'NOT_ANSWERED';
-    
+
     setQuestionStatuses(initialStatuses);
     setActiveTest(testObj);
     setConfirmationModal({ isOpen: false, testObj: null, isReattempt: false });
-    
+
     const databaseDurationInMinutes = testObj.duration && testObj.duration > 0 ? testObj.duration : 180;
     const durationInSeconds = databaseDurationInMinutes * 60;
-    
+
     examDeadlineRef.current = Date.now() + durationInSeconds * 1000;
     setTimeLeft(durationInSeconds);
 
@@ -240,7 +248,7 @@ function StudentTestsMarketplaceContent() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(reportData)
       });
-      
+
       const historyRes = await fetch('/api/attempts');
       if (historyRes.ok) {
         const detailedHistory: AttemptHistoryRecord[] = await historyRes.json();
@@ -258,7 +266,7 @@ function StudentTestsMarketplaceContent() {
   const handleSaveAndNext = () => {
     if (!activeTest) return;
     const qId = activeTest.questions[currentIdx]?._id || String(currentIdx);
-    
+
     setQuestionStatuses((prev) => ({
       ...prev,
       [qId]: selectedAnswers[qId] !== undefined ? 'ANSWERED' : 'NOT_ANSWERED'
@@ -293,7 +301,7 @@ function StudentTestsMarketplaceContent() {
   const handleClearResponse = () => {
     if (!activeTest) return;
     const qId = activeTest.questions[currentIdx]?._id || String(currentIdx);
-    
+
     setSelectedAnswers((prev) => {
       const updated = { ...prev };
       delete updated[qId];
@@ -394,7 +402,7 @@ function StudentTestsMarketplaceContent() {
 
     return (
       <div className="fixed inset-0 z-[9999] bg-slate-50 text-slate-900 flex flex-col justify-between w-screen h-screen overflow-hidden select-none">
-        
+
         {/* Responsive Header Grid */}
         <div className="bg-gradient-to-r from-blue-900 to-indigo-950 border-b border-slate-700 text-white px-4 sm:px-6 py-3 flex justify-between items-center shadow-md">
           <div className="min-w-0 flex-1 pr-2">
@@ -407,7 +415,7 @@ function StudentTestsMarketplaceContent() {
               <p className="font-mono text-sm sm:text-lg font-black text-amber-400 tracking-wider">{formatClockTime(timeLeft)}</p>
             </div>
             <button
-              onClick={() => { if(confirm("Confirmation: Finalize and submit examination package for score processing?")) compileAndSavePayloadCloud(); }}
+              onClick={() => { if (confirm("Confirmation: Finalize and submit examination package for score processing?")) compileAndSavePayloadCloud(); }}
               className="ml-1 px-3 py-2 bg-red-600 hover:bg-red-700 text-white text-xs sm:text-sm font-bold rounded-lg"
             >
               Submit
@@ -436,7 +444,7 @@ function StudentTestsMarketplaceContent() {
 
         {/* Responsive Core Flex Row Layout */}
         <div className="flex-1 flex overflow-hidden w-full relative bg-slate-200">
-          
+
           {/* Main Body Column Pane */}
           <div className="flex-1 flex flex-col bg-white w-full h-full overflow-hidden min-h-0">
             <div className="flex-1 overflow-y-auto min-h-0 overscroll-contain">
@@ -447,7 +455,7 @@ function StudentTestsMarketplaceContent() {
                     <div className="px-4 py-2 bg-yellow-50 border border-yellow-200 text-yellow-800 rounded-lg shadow">This is the last question.</div>
                   </div>
                 )}
-                
+
                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center border-b border-slate-200 pb-3 mb-4 sm:mb-6 gap-2">
                   <span className="text-[10px] sm:text-xs font-black bg-blue-50 text-blue-800 border border-blue-200 px-2.5 py-1 rounded-lg uppercase tracking-wide self-start">
                     Section: {activeQuestion.subject || 'General Pattern'}
@@ -478,13 +486,12 @@ function StudentTestsMarketplaceContent() {
                     const isChosen = selectedAnswers[qId] === i;
                     return (
                       <button
-                        key={i} 
+                        key={i}
                         onClick={() => setSelectedAnswers({ ...selectedAnswers, [qId]: i })}
-                        className={`w-full p-3.5 sm:p-4 text-left text-xs sm:text-sm font-semibold rounded-xl border transition-all flex items-center gap-3 sm:gap-4 ${
-                          isChosen 
-                            ? 'border-blue-600 bg-blue-50 text-blue-900 ring-1 ring-blue-600 shadow-sm' 
+                        className={`w-full p-3.5 sm:p-4 text-left text-xs sm:text-sm font-semibold rounded-xl border transition-all flex items-center gap-3 sm:gap-4 ${isChosen
+                            ? 'border-blue-600 bg-blue-50 text-blue-900 ring-1 ring-blue-600 shadow-sm'
                             : 'border-slate-200 bg-slate-50/50 hover:bg-slate-100 text-slate-700'
-                        }`}
+                          }`}
                       >
                         <span className={`w-5 h-5 sm:w-6 sm:h-6 rounded-full flex-shrink-0 flex items-center justify-center text-xs font-black transition-colors ${isChosen ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-500'}`}>
                           {String.fromCharCode(65 + i)}
@@ -539,9 +546,9 @@ function StudentTestsMarketplaceContent() {
             transform transition-transform duration-300 ease-in-out h-full
             ${mobilePaletteOpen ? 'translate-x-0' : 'translate-x-full lg:translate-x-0'}
           `}>
-            
+
             <div className="p-4 flex-1 overflow-y-auto">
-              
+
               <div className="bg-white p-3 border border-slate-200 rounded-xl mb-4 flex items-center gap-3 shadow-sm">
                 <div className="w-8 h-8 rounded-full bg-slate-200 flex-shrink-0 flex items-center justify-center text-slate-600 font-black text-xs">EX</div>
                 <div className="min-w-0">
@@ -585,8 +592,8 @@ function StudentTestsMarketplaceContent() {
             </div>
 
             <div className="p-4 bg-slate-100 border-t border-slate-200 w-full">
-              <button 
-                onClick={() => { if(confirm("Confirmation: Finalize and submit examination package for score processing?")) compileAndSavePayloadCloud(); }}
+              <button
+                onClick={() => { if (confirm("Confirmation: Finalize and submit examination package for score processing?")) compileAndSavePayloadCloud(); }}
                 className="w-full text-xs font-black text-white bg-red-600 hover:bg-red-700 py-3 rounded-xl transition-all shadow-md tracking-wider uppercase"
               >
                 Submit Examination Paper
@@ -597,7 +604,7 @@ function StudentTestsMarketplaceContent() {
 
           {/* Backdrop Overlay shield for Mobile navigation panels */}
           {mobilePaletteOpen && (
-            <div 
+            <div
               onClick={() => setMobilePaletteOpen(false)}
               className="lg:hidden fixed inset-0 bg-black/40 z-40"
             />
@@ -619,7 +626,7 @@ function StudentTestsMarketplaceContent() {
     return (
       <div className="max-w-4xl mx-auto px-4 py-6 sm:py-10 w-full min-h-screen">
         <div className="bg-white p-4 sm:p-6 md:p-10 rounded-2xl sm:rounded-3xl border border-slate-200 shadow-xl mb-8">
-          
+
           <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4 border-b border-slate-100 pb-6 mb-6 sm:mb-8">
             <div className="min-w-0 flex-1">
               <div className="flex flex-wrap gap-1.5 items-center">
@@ -633,11 +640,11 @@ function StudentTestsMarketplaceContent() {
                 )}
               </div>
               <h2 className="text-xl sm:text-2xl font-black text-slate-900 mt-2 tracking-tight break-words">{activeTest.title}</h2>
-              
+
               {siblingAttempts.length > 1 && (
                 <div className="mt-3 flex flex-col sm:flex-row sm:items-center gap-2">
                   <label className="text-xs font-bold text-slate-500 whitespace-nowrap">Switch History View:</label>
-                  <select 
+                  <select
                     value={currentAnalysisRecord._id}
                     onChange={(e) => {
                       const target = siblingAttempts.find(a => a._id === e.target.value);
@@ -654,15 +661,15 @@ function StudentTestsMarketplaceContent() {
                 </div>
               )}
             </div>
-            
+
             <div className="flex gap-2 w-full md:w-auto flex-wrap sm:flex-nowrap">
-              <button 
+              <button
                 onClick={() => setConfirmationModal({ isOpen: true, testObj: activeTest, isReattempt: true })}
                 className="flex-1 md:flex-none px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-sm whitespace-nowrap text-center"
               >
                 Start Reattempt
               </button>
-              <button 
+              <button
                 onClick={() => {
                   setActiveTest(null);
                   setShowAnalysis(false);
@@ -757,7 +764,7 @@ function StudentTestsMarketplaceContent() {
   // ==========================================
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-12 w-full min-h-screen relative">
-      
+
       {/* Dynamic Overlay Dialog Modal Frame */}
       {confirmationModal.isOpen && confirmationModal.testObj && (
         <div className="fixed inset-0 z-[99999] bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
@@ -768,10 +775,10 @@ function StudentTestsMarketplaceContent() {
                 {confirmationModal.isReattempt ? 'Confirm Secure Reattempt' : 'Confirm Examination Launch'}
               </h3>
               <p className="text-[11px] sm:text-xs text-slate-500 mt-2 leading-relaxed">
-                You are executing a high-security assessment framework lock routine. 
+                You are executing a high-security assessment framework lock routine.
                 Any runtime operations initiating blurring loops, background shifts, or task minimization triggers an immediate server scoring package compilation sequence.
               </p>
-              
+
               <div className="my-4 p-3 bg-slate-50 border border-slate-100 rounded-xl text-left text-[11px] sm:text-xs font-bold text-slate-600 space-y-1.5">
                 <div className="flex justify-between"><span>Allotted Duration:</span> <span className="text-slate-900 font-extrabold">{confirmationModal.testObj.duration} Minutes</span></div>
                 <div className="flex justify-between"><span>Evaluation Targets:</span> <span className="text-slate-900 font-extrabold">{confirmationModal.testObj.questions?.length || 0} Core Elements</span></div>
@@ -821,7 +828,7 @@ function StudentTestsMarketplaceContent() {
 
             return (
               <div key={test._id} className="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between items-start hover:shadow-md transition-shadow relative overflow-hidden">
-                
+
                 {isAttempted && (
                   <div className="absolute top-0 right-0 bg-emerald-600 text-white px-3 py-1 rounded-bl-xl text-[9px] font-black tracking-wide uppercase shadow-sm">
                     Evaluated Asset ({pastAttempts.length}x)
@@ -834,7 +841,7 @@ function StudentTestsMarketplaceContent() {
                     <span>Duration: {test.duration} Min</span>
                     <span>Elements: {test.questions?.length || 0} Questions</span>
                   </div>
-                  
+
                   {isAttempted && latestAttempt && (
                     <div className="mb-4 bg-slate-50 border border-slate-100 p-2.5 rounded-xl text-[10px] sm:text-[11px] flex justify-between items-center text-slate-600 gap-2">
                       <span className="truncate">Latest Run Score: <strong className="text-slate-900 font-extrabold">{latestAttempt.totalMarks}</strong>/{latestAttempt.maxPossibleMarks}</span>
