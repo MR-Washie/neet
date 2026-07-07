@@ -1,10 +1,14 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { SessionProvider } from 'next-auth/react';
+import UploadForm from '@/components/UploadForm';
+
+import { uploadImageAction } from '@/app/actions/uploadImage';
 
 interface QuestionSchema {
   _id?: string;
-  questionText: string;
+  // questionText?: string;
+  imageUrl: string;
   options: string[];
   correctOptionIndex: number;
   subject: string;
@@ -21,17 +25,21 @@ interface TestSchema {
 function AdminManageTestsContent() {
   const [tests, setTests] = useState<TestSchema[]>([]);
   const [loading, setLoading] = useState(true);
-  
+
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState<string>('');
+
   // Editing focus states
   const [editingTest, setEditingTest] = useState<TestSchema | null>(null);
   const [editingQuestionIdx, setEditingQuestionIdx] = useState<number | null>(null);
 
   // Form input state for individual question edits/adds
   const [currentQ, setCurrentQ] = useState<QuestionSchema>({
-    questionText: '',
-    options: ['', '', '', ''],
+    imageUrl: '',
+    options: ['1', '2', '3', '4'],
     correctOptionIndex: 0,
-    subject: 'Biology',
+    subject: 'Physics',
     topic: ''
   });
 
@@ -55,6 +63,23 @@ function AdminManageTestsContent() {
     fetchAllTests();
   }, []);
 
+  useEffect(() => {
+    let objectUrl: string | undefined;
+
+    if (imageFile) {
+      objectUrl = URL.createObjectURL(imageFile);
+      setPreviewUrl(objectUrl);
+    } else if (currentQ.imageUrl) {
+      setPreviewUrl(currentQ.imageUrl);
+    } else {
+      setPreviewUrl('');
+    }
+
+    return () => {
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
+    };
+  }, [imageFile, currentQ.imageUrl]);
+
   // Trigger absolute deletion of a test document
   const handleDeleteTestNode = async (id: string) => {
     if (!confirm('Bhai, are you sure? Yeh test database se permanently delete ho jayega!')) return;
@@ -69,10 +94,28 @@ function AdminManageTestsContent() {
     }
   };
 
+  const resetQuestionForm = (subject = 'Physics') => {
+    setImageFile(null);
+    setPreviewUrl('');
+    setCurrentQ({
+      imageUrl: '',
+      options: ['1', '2', '3', '4'],
+      correctOptionIndex: 0,
+      subject,
+      topic: ''
+    });
+  };
+
   // Push updated test blueprint to server
   const handleUpdateTestSubmit = async () => {
     if (!editingTest || editingTest.questions.length === 0) {
       alert('Test schema requires at least 1 nested question component.');
+      return;
+    }
+
+    const invalidQuestion = editingTest.questions.some((q) => !q.imageUrl || !q.options.every((opt) => opt.trim()));
+    if (invalidQuestion) {
+      alert('Each question must have a valid image and non-empty options before saving.');
       return;
     }
 
@@ -99,27 +142,57 @@ function AdminManageTestsContent() {
     setCurrentQ({ ...currentQ, options: updatedOptions });
   };
 
+  const uploadSingleImage = async (file: File): Promise<string | null> => {
+    setIsUploading(true);
+    const formData = new FormData();
+    formData.append('image', file);
+
+    try {
+      const res = await uploadImageAction(formData);
+      console.log(res);
+      if (res.success && res.url) return res.url;
+      alert("Upload failed: " + res.error);
+    } catch (err) {
+      console.error("Upload error:", err);
+    } finally {
+      setIsUploading(false);
+    }
+    return null;
+  };
+
   // Save current dynamic input to nested question array inside editing target
-  const commitQuestionChanges = () => {
+  const commitQuestionChanges = async () => {
     if (!editingTest) return;
-    if (!currentQ.questionText || currentQ.options.some(o => !o.trim())) {
-      alert('Ensure question statement and options parameters are fully initialized.');
+    if (currentQ.options.some((o) => !o.trim())) {
+      alert('Please fill all four options before saving the question.');
       return;
     }
 
-    let updatedQuestions = [...editingTest.questions];
+    let finalUrl = currentQ.imageUrl;
+
+    if (!imageFile && !finalUrl) {
+      alert('Please upload an image or keep the existing image before saving this question.');
+      return;
+    }
+
+    if (imageFile) {
+      const uploadedUrl = await uploadSingleImage(imageFile);
+      if (!uploadedUrl) return;
+      finalUrl = uploadedUrl;
+    }
+
+    const savedQuestion = { ...currentQ, imageUrl: finalUrl };
+    const updatedQuestions = [...editingTest.questions];
 
     if (editingQuestionIdx !== null) {
-      // Modify existing index node
-      updatedQuestions[editingQuestionIdx] = currentQ;
+      updatedQuestions[editingQuestionIdx] = savedQuestion;
     } else {
-      // Direct push node insertion
-      updatedQuestions.push(currentQ);
+      updatedQuestions.push(savedQuestion);
     }
 
     setEditingTest({ ...editingTest, questions: updatedQuestions });
     setEditingQuestionIdx(null);
-    setCurrentQ({ questionText: '', options: ['', '', '', ''], correctOptionIndex: 0, subject: 'Biology', topic: '' });
+    resetQuestionForm(currentQ.subject);
   };
 
   if (loading) {
@@ -147,14 +220,14 @@ function AdminManageTestsContent() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
             <div>
               <label className="text-xs font-bold text-slate-400 uppercase">Test Title Name</label>
-              <input 
+              <input
                 type="text" value={editingTest.title} onChange={(e) => setEditingTest({ ...editingTest, title: e.target.value })}
                 className="w-full mt-1 p-3 rounded-xl border border-slate-200 text-sm font-semibold text-slate-800 outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
             <div>
               <label className="text-xs font-bold text-slate-400 uppercase">Timer Duration (Mins)</label>
-              <input 
+              <input
                 type="number" value={editingTest.duration} onChange={(e) => setEditingTest({ ...editingTest, duration: Number(e.target.value) })}
                 className="w-full mt-1 p-3 rounded-xl border border-slate-200 text-sm font-semibold text-slate-800 outline-none focus:ring-2 focus:ring-blue-500"
               />
@@ -163,35 +236,46 @@ function AdminManageTestsContent() {
 
           {/* Nested In-line Question Form Workspace */}
           <div className={`p-5 rounded-2xl border mb-6 ${editingQuestionIdx !== null ? 'bg-amber-50/30 border-amber-200' : 'bg-slate-50 border-slate-200/60'}`}>
-            <h3 className="font-bold text-slate-800 text-xs uppercase tracking-wider mb-4 text-slate-500">
+            <h3 className="font-bold text-slate-800 text-xs uppercase tracking-wider mb-4">
               {editingQuestionIdx !== null ? `⚠️ Modifying Sub-Question Cluster #${editingQuestionIdx + 1}` : '➕ Append New Question To Matrix'}
             </h3>
 
             <div className="grid grid-cols-2 gap-3 mb-4">
-              <select 
+              <select
                 value={currentQ.subject} onChange={(e) => setCurrentQ({ ...currentQ, subject: e.target.value })}
                 className="p-2.5 bg-white border border-slate-200 rounded-lg text-xs font-semibold"
               >
-                <option>Biology</option>
                 <option>Physics</option>
                 <option>Chemistry</option>
+                <option>Zoology</option>
+                <option>Botany</option>
               </select>
-              <input 
+              <input
                 type="text" placeholder="Topic schema" value={currentQ.topic}
                 onChange={(e) => setCurrentQ({ ...currentQ, topic: e.target.value })}
                 className="p-2.5 bg-white border border-slate-200 rounded-lg text-xs font-medium outline-none"
               />
             </div>
 
-            <textarea 
+            {/* <textarea 
               rows={2} placeholder="Write high yield target statement question..."
               value={currentQ.questionText} onChange={(e) => setCurrentQ({ ...currentQ, questionText: e.target.value })}
               className="w-full p-3 rounded-xl border border-slate-200 text-xs font-medium outline-none mb-4"
-            />
+            /> */}
+
+            <UploadForm onFileChange={(file) => setImageFile(file)} />
+
+            {previewUrl ? (
+              <div className="mb-4 flex justify-center">
+                <img src={previewUrl} alt="Question preview" className="max-w-full max-h-56 object-contain rounded-lg border border-slate-200 shadow-sm" />
+              </div>
+            ) : (
+              <p className="text-xs text-slate-500 mb-4">No image selected</p>
+            )}
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-4">
               {currentQ.options.map((opt, i) => (
-                <input 
+                <input
                   key={i} type="text" placeholder={`Option ${String.fromCharCode(65 + i)}`}
                   value={opt} onChange={(e) => handleOptionChange(i, e.target.value)}
                   className="p-2.5 bg-white border border-slate-200 rounded-lg text-xs font-medium outline-none"
@@ -202,7 +286,7 @@ function AdminManageTestsContent() {
             <div className="flex justify-between items-center">
               <div className="flex items-center gap-2 text-xs font-bold text-slate-500">
                 <span>Correct Option:</span>
-                <select 
+                <select
                   value={currentQ.correctOptionIndex} onChange={(e) => setCurrentQ({ ...currentQ, correctOptionIndex: Number(e.target.value) })}
                   className="p-1 bg-white border border-slate-200 rounded text-xs font-bold"
                 >
@@ -214,10 +298,10 @@ function AdminManageTestsContent() {
               </div>
               <div className="flex gap-2">
                 {editingQuestionIdx !== null && (
-                  <button 
+                  <button
                     onClick={() => {
                       setEditingQuestionIdx(null);
-                      setCurrentQ({ questionText: '', options: ['', '', '', ''], correctOptionIndex: 0, subject: 'Biology', topic: '' });
+                      resetQuestionForm(currentQ.subject);
                     }}
                     className="px-3 py-1.5 bg-slate-200 text-slate-700 text-xs font-bold rounded-lg"
                   >
@@ -238,21 +322,28 @@ function AdminManageTestsContent() {
               {editingTest.questions.map((q, idx) => (
                 <div key={idx} className="p-3 bg-white border border-slate-200 rounded-xl flex justify-between items-center gap-4 shadow-sm">
                   <div className="text-xs">
-                    <p className="font-bold text-slate-800"><span className="text-slate-400 mr-1">#{idx+1}</span> {q.questionText}</p>
+                    <p className="font-bold text-slate-800"><span className="text-slate-400 mr-1">#{idx + 1}</span> {q.imageUrl}</p>
                     <div className="mt-1 flex gap-1.5">
                       <span className="text-[9px] bg-blue-50 text-blue-600 px-1 rounded font-bold">{q.subject}</span>
                       <span className="text-[9px] bg-emerald-50 text-emerald-700 px-1 rounded font-bold">Ans Index: {q.correctOptionIndex}</span>
                     </div>
                   </div>
                   <div className="flex gap-2 shrink-0">
-                    <button 
-                      onClick={() => { setEditingQuestionIdx(idx); setCurrentQ(q); }}
+                    <button
+                      onClick={() => {
+                        setEditingQuestionIdx(idx);
+                        setImageFile(null);
+                        setCurrentQ({ ...q });
+                      }}
                       className="text-xs font-bold text-blue-600 hover:underline"
                     >
                       ✏️ Edit
                     </button>
-                    <button 
-                      onClick={() => setEditingTest({ ...editingTest, questions: editingTest.questions.filter((_, i) => i !== idx) })}
+                    <button
+                      onClick={() => {
+                        const filteredQuestions = editingTest.questions.filter((_, i) => i !== idx);
+                        setEditingTest({ ...editingTest, questions: filteredQuestions });
+                      }}
                       className="text-xs font-bold text-red-500 hover:underline"
                     >
                       🗑️ Drop

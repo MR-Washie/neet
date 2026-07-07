@@ -50,7 +50,7 @@ const QuestionSchema = new Schema<IQuestion>({
   imageUrl: { type: String, required: true},
   options: { type: [String], required: true, validate: [arrayLimit, 'Options count must be exactly 4'] },
   correctOptionIndex: { type: Number, required: true, min: 0, max: 3 },
-  subject: { type: String, required: true, enum: ['Biology', 'Physics', 'Chemistry'] },
+  subject: { type: String, required: true, enum: ['Biology', 'Physics', 'Chemistry', 'Zoology', 'Botany'] },
   topic: { type: String, default: '' }
 });
 
