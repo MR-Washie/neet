@@ -1,153 +1,3 @@
-// 'use client';
-// import { useSession } from 'next-auth/react';
-// import { useRouter } from 'next/navigation';
-// import { useEffect } from 'react';
-// import Link from 'next/link';
-
-// export default function DashboardPage() {
-//   const { data: session, status } = useSession();
-//   const router = useRouter();
-
-//   // Route Guard: Agar user authenticated nahi hai, toh use login par redirect karo
-//   useEffect(() => {
-//     if (status === 'unauthenticated') {
-//       router.push('/login');
-//     }
-//   }, [status, router]);
-
-//   if (status === 'loading') {
-//     return (
-//       <div className="min-h-screen flex items-center justify-center bg-slate-50">
-//         <div className="flex flex-col items-center gap-3">
-//           <div className="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin" />
-//           <p className="text-sm font-medium text-slate-500">Syncing your preparation matrix...</p>
-//         </div>
-//       </div>
-//     );
-//   }
-
-//   // Sample static dummy metrics for neat presentation
-//   const coreStats = [
-//     { label: 'Total Mock Tests Given', value: '14 / 20', icon: '📝', color: 'bg-blue-50 text-blue-600' },
-//     { label: 'Overall Precision Rate', value: '78.4%', icon: '🎯', color: 'bg-emerald-50 text-emerald-600' },
-//     { label: 'Total Practice Time', value: '42.5 hrs', icon: '⏱️', color: 'bg-purple-50 text-purple-600' },
-//     { label: 'Current National Rank', value: '#1,420', icon: '🏆', color: 'bg-amber-50 text-amber-600' },
-//   ];
-
-//   const subjectPerformance = [
-//     { subject: 'Biology (Botany + Zoology)', completion: 85, color: 'bg-emerald-500', target: '340/360 Avg' },
-//     { subject: 'Chemistry (Organic + Inorganic + Physical)', completion: 62, color: 'bg-blue-500', target: '145/180 Avg' },
-//     { subject: 'Physics (Mechanics + Electrodynamics...)', completion: 48, color: 'bg-purple-500', target: '120/180 Avg' },
-//   ];
-
-//   return (
-//     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full flex-grow">
-      
-//       {/* HEADER SECTION */}
-//       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10 pb-6 border-b border-slate-200">
-//         <div>
-//           <h1 className="text-3xl font-black tracking-tight text-slate-900">
-//             Welcome back, <span className="text-blue-600">{session?.user?.name || 'Aspirant'}</span> 👋
-//           </h1>
-//           <p className="text-sm text-slate-500 mt-1">
-//             Track your high-yield goals. Your focus determines your seat.
-//           </p>
-//         </div>
-//         <div>
-//           <Link
-//             href="/tests"
-//             className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-sm font-bold rounded-xl text-white bg-blue-600 hover:bg-blue-700 shadow-md shadow-blue-100 transition-all active:scale-[0.98]"
-//           >
-//             🚀 Launch High-Yield Mock Test
-//           </Link>
-//         </div>
-//       </div>
-
-//       {/* GRID LEVEL 1: OVERALL METRICS CARDS */}
-//       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-//         {coreStats.map((stat, i) => (
-//           <div key={i} className="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm flex items-center gap-4">
-//             <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-xl font-bold ${stat.color}`}>
-//               {stat.icon}
-//             </div>
-//             <div>
-//               <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">{stat.label}</p>
-//               <p className="text-2xl font-black text-slate-900 mt-0.5">{stat.value}</p>
-//             </div>
-//           </div>
-//         ))}
-//       </div>
-
-//       {/* GRID LEVEL 2: SUBJECT GRAPH TRACKER + LIVE SYLLABUS BREAKDOWN */}
-//       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
-//         {/* Left 2 Columns: Subject Competency Matrix */}
-//         <div className="lg:col-span-2 bg-white p-6 sm:p-8 rounded-3xl border border-slate-200/80 shadow-sm">
-//           <h3 className="text-lg font-bold text-slate-900 mb-6 flex items-center gap-2">
-//             🧬 Subject Competency Matrix
-//           </h3>
-          
-//           <div className="space-y-6">
-//             {subjectPerformance.map((item, idx) => (
-//               <div key={idx} className="space-y-2">
-//                 <div className="flex justify-between text-sm font-semibold text-slate-700">
-//                   <span>{item.subject}</span>
-//                   <span className="text-slate-400 text-xs font-bold">{item.target}</span>
-//                 </div>
-//                 {/* Dynamic Progress Bar */}
-//                 <div className="w-full bg-slate-100 h-3 rounded-full overflow-hidden">
-//                   <div 
-//                     className={`h-full ${item.color} rounded-full transition-all duration-500`} 
-//                     style={{ width: `${item.completion}%` }}
-//                   />
-//                 </div>
-//                 <div className="text-right text-xs font-bold text-slate-500">
-//                   {item.completion}% Syllabus Evaluated
-//                 </div>
-//               </div>
-//             ))}
-//           </div>
-//         </div>
-
-//         {/* Right 1 Column: Recommendations / Action Center */}
-//         <div className="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm flex flex-col justify-between">
-//           <div>
-//             <h3 className="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
-//               💡 Weak Area Targets
-//             </h3>
-//             <p className="text-xs text-slate-500 mb-6 leading-relaxed">
-//               Based on your past 3 mock attempts, standard algorithms recommend targeting these explicit NCERT sectors immediately:
-//             </p>
-            
-//             <div className="space-y-3">
-//               <div className="p-3 bg-red-50/60 border border-red-100 rounded-xl flex items-center justify-between">
-//                 <span className="text-xs font-bold text-red-700 truncate">Physics: Rotational Motion</span>
-//                 <span className="text-[10px] font-black bg-red-100 text-red-800 px-2 py-0.5 rounded-md">-12 Marks Lost</span>
-//               </div>
-//               <div className="p-3 bg-amber-50/60 border border-amber-100 rounded-xl flex items-center justify-between">
-//                 <span className="text-xs font-bold text-amber-700 truncate">Chemistry: Ionic Equilibrium</span>
-//                 <span className="text-[10px] font-black bg-amber-100 text-amber-800 px-2 py-0.5 rounded-md">Critical Priority</span>
-//               </div>
-//               <div className="p-3 bg-blue-50/60 border border-blue-100 rounded-xl flex items-center justify-between">
-//                 <span className="text-xs font-bold text-blue-700 truncate">Biology: Genetics (Linkage Map)</span>
-//                 <span className="text-[10px] font-black bg-blue-100 text-blue-800 px-2 py-0.5 rounded-md">80% Accuracy Required</span>
-//               </div>
-//             </div>
-//           </div>
-
-//           <Link
-//             href="/analytics"
-//             className="w-full text-center block mt-6 px-4 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition-colors"
-//           >
-//             View Complete Error Log Traces
-//           </Link>
-//         </div>
-
-//       </div>
-
-//     </div>
-//   );
-// }
 
 
 'use client';
@@ -252,7 +102,7 @@ export default function DashboardPage() {
         </div>
         <div>
           <Link
-            href="/tests"
+            href="/neet-pyq"
             className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-sm font-bold rounded-xl text-white bg-blue-600 hover:bg-blue-700 shadow-md shadow-blue-100 transition-all active:scale-[0.98]"
           >
             🚀 Launch High-Yield Mock Test
@@ -353,7 +203,7 @@ export default function DashboardPage() {
           </div>
 
           <Link
-            href="/tests"
+            href="/neet-pyq"
             className="w-full text-center block mt-6 px-4 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition-colors"
           >
             Review Complete Test History Analysis

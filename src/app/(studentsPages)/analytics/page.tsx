@@ -110,7 +110,7 @@ export default function AnalyticsPage() {
             ← Main Dashboard
           </Link>
           <Link
-            href="/tests"
+            href="/neet-pyq"
             className="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-sm flex items-center gap-2"
           >
             Launch New Test 🚀
@@ -196,7 +196,7 @@ export default function AnalyticsPage() {
                         </td>
                         <td className="py-4 px-3 text-right">
                           <Link
-                            href="/tests"
+                            href="/neet-pyq"
                             className="text-[11px] font-black text-blue-600 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-lg transition-all"
                           >
                             Review Node

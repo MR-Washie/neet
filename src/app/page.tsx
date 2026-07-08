@@ -74,7 +74,7 @@ export default function HomePage() {
             {/* Navigation CTA Actions */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
-                href="/tests"
+                href="/neet-pyq"
                 className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 border border-transparent text-base font-bold rounded-2xl text-white bg-blue-600 hover:bg-blue-700 shadow-xl shadow-blue-100 transition-all active:scale-[0.98]"
               >
                 Start Free Mock Test
