@@ -30,7 +30,7 @@ export default function Navbar() {
 
   const navLinks = [
     { href: '/dashboard', label: 'Dashboard' },
-    { href: '/tests', label: 'Mock Tests' },
+    { href: '/neet-pyq', label: 'Neet PYQ' },
     { href: '/analytics', label: 'Performance Analytics' },
   ];
 
