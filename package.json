@@ -12,6 +12,7 @@
     "@auth/mongodb-adapter": "^3.11.2",
     "cloudinary": "^2.10.0",
     "lucide": "^1.23.0",
+    "lucide-react": "^1.23.0",
     "mongodb": "^6.21.0",
     "mongoose": "^9.7.3",
     "next": "^16.2.10",
