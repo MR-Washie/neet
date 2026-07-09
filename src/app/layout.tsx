@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar"
 import AuthProvider from '@/components/AuthProviders';
 import Footer from "@/components/Footer";
+import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -49,6 +50,9 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col">
         <AuthProvider>
           <Navbar />
+
+          <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7587914634231629"
+            crossOrigin="anonymous"></script>
 
           {children}
 
