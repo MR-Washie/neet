@@ -1,68 +1,167 @@
-import { Metadata } from 'next';
 
-// 1. Generate Metadata dynamically based on the URL slug
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const title = params.slug.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
-  return {
-    title: `${title} | NEETest Blog`,
-    description: `Expert guide and tips on ${title} for NEET-UG aspirants.`,
+
+// import { MDXRemote } from "next-mdx-remote/rsc";
+// import { getPostBySlug, getAllPosts } from "@/lib/content";
+// import { notFound } from "next/navigation";
+// import type { Metadata } from "next";
+
+// type Params = Promise<{ slug: string }>;
+
+// export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
+//   const { slug } = await params;
+//   const post = getPostBySlug(slug);
+  
+//   if (!post) return { title: "Not Found" };
+
+//   return {
+//     title: `${post.frontmatter.title} | NEETest Blog`,
+//     description: post.frontmatter.description,
+//     authors: [{ name: "NEETest Team" }],
+//     alternates: { canonical: `https://neetest.com/blog/${slug}` },
+//     openGraph: {
+//       title: post.frontmatter.title,
+//       description: post.frontmatter.description,
+//       type: "article",
+//       publishedTime: post.frontmatter.publishedAt,
+//     },
+//   };
+// }
+
+// export async function generateStaticParams() {
+//   return getAllPosts().map((post) => ({ slug: post.slug }));
+// }
+
+// export default async function BlogPost({ params }: { params: Params }) {
+//   const { slug } = await params;
+//   const post = getPostBySlug(slug);
+//   if (!post) notFound();
+
+//   const jsonLd = {
+//     "@context": "https://schema.org",
+//     "@type": "Article",
+//     headline: post.frontmatter.title,
+//     description: post.frontmatter.description,
+//     datePublished: post.frontmatter.publishedAt,
+//     author: { "@type": "Organization", name: "NEETest Team" },
+//   };
+
+//   return (
+//     <>
+//       <script
+//         type="application/ld+json"
+//         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+//       />
+      
+//       <main className="min-h-screen pt-16 pb-24 px-6">
+//         <article className="max-w-3xl mx-auto">
+//           {/* Header */}
+//           <header className="mb-12 border-b border-slate-200 pb-10">
+//             <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight mb-6">
+//               {post.frontmatter.title}
+//             </h1>
+//             <div className="flex items-center gap-4 text-slate-500 font-medium">
+//               <span className="bg-blue-50 text-blue-600 px-3 py-1 rounded-full text-sm">
+//                 NEET Strategy
+//               </span>
+//               <span>{post.frontmatter.publishedAt}</span>
+//             </div>
+//           </header>
+
+//           {/* Content: 'prose' makes everything look professional automatically */}
+//           <div className="prose prose-slate prose-lg lg:prose-xl max-w-none prose-headings:font-bold prose-a:text-blue-600">
+//             <MDXRemote source={post.content} />
+//           </div>
+
+//           {/* Footer Call-to-Action */}
+//           <section className="mt-20 p-8 bg-slate-900 rounded-3xl text-white">
+//             <h3 className="text-2xl font-bold mb-2">Ready to crush NEET 2026?</h3>
+//             <p className="text-slate-400 mb-6">Join thousands of students getting daily practice questions and expert study hacks.</p>
+//             <button className="bg-blue-600 hover:bg-blue-500 transition-colors px-8 py-3 rounded-xl font-bold">
+//               Join the Newsletter
+//             </button>
+//           </section>
+//         </article>
+//       </main>
+//     </>
+//   );
+// }
+
+import { MDXRemote } from "next-mdx-remote/rsc";
+import { getPostBySlug, getAllPosts } from "@/lib/content";
+import { notFound } from "next/navigation";
+import type { Metadata } from "next";
+
+type Params = Promise<{ slug: string }>;
+
+// ... (keep your existing generateMetadata and generateStaticParams functions exactly as they are)
+
+export default async function BlogPost({ params }: { params: Params }) {
+  const { slug } = await params;
+  const post = getPostBySlug(slug);
+  if (!post) notFound();
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: post.frontmatter.title,
+    description: post.frontmatter.description,
+    datePublished: post.frontmatter.publishedAt,
+    author: { "@type": "Organization", name: "NEETest Team" },
   };
-}
-
-export default function BlogPost({ params }: { params: { slug: string } }) {
-  // Format the slug for display
-  const title = params.slug.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
 
   return (
-    <main className="max-w-4xl mx-auto px-6 py-16">
-      <article className="prose lg:prose-xl prose-slate mx-auto">
-        
-        {/* Header Section */}
-        <header className="mb-10 text-center">
-          <span className="text-blue-600 font-bold uppercase tracking-widest text-sm">NEET Preparation Guide</span>
-          <h1 className="text-4xl md:text-5xl font-extrabold mt-4 text-slate-900">{title}</h1>
-          <p className="text-slate-500 mt-4">Last Updated: July 2026 | By NEETest Expert Team</p>
-        </header>
-
-        {/* Content Section - Add your long-form content here */}
-        <section className="text-lg leading-relaxed text-slate-700">
-          <p>
-            Cracking the NEET-UG examination requires a strategic approach. When students search for <strong>{title.toLowerCase()}</strong>, 
-            the most important factor is consistency and using verified <strong>NEET PYQ resources</strong>.
-          </p>
-
-          <h2 className="text-2xl font-bold mt-8">Why this topic matters for NEET 2026</h2>
-          <p>
-            Based on the latest NTA guidelines, understanding this topic is critical for scoring above the 600+ threshold. 
-            Many students struggle here because they ignore the NCERT base.
-          </p>
-
-          {/* Internal Linking for SEO Authority */}
-          <div className="bg-slate-900 text-white p-8 rounded-2xl my-10">
-            <h3 className="text-xl font-bold text-white mb-2">Ready to practice?</h3>
-            <p className="text-slate-300 mb-6">
-              Don't just read about it. Apply your knowledge by solving actual previous year questions related to this topic.
-            </p>
-            <a href="/neet-pyq" className="inline-block bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-6 rounded-lg transition-colors">
-              Go to NEET PYQ Archive
-            </a>
-          </div>
-        </section>
-      </article>
-
-      {/* JSON-LD Article Schema for Google Rich Snippets */}
+    <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Article",
-            "headline": title,
-            "publisher": { "@type": "Organization", "name": "NEETest" },
-            "datePublished": "2026-07-09",
-          }),
-        }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-    </main>
+      
+      <main className="bg-white min-h-screen">
+        {/* Decorative subtle background element */}
+        <div className="absolute top-0 w-full h-[400px] bg-gradient-to-b from-slate-50 to-white -z-10" />
+
+        <article className="max-w-[700px] mx-auto px-6 py-20">
+          {/* Header Section */}
+          <header className="mb-12">
+            <div className="flex items-center gap-3 mb-6">
+              <span className="px-3 py-1 bg-blue-100 text-blue-700 text-xs font-bold uppercase tracking-widest rounded-full">
+                NEET 2026 Guide
+              </span>
+              <time className="text-sm text-slate-500 font-medium">
+                {post.frontmatter.publishedAt}
+              </time>
+            </div>
+            
+            <h1 className="text-4xl md:text-6xl font-extrabold text-slate-900 tracking-tight leading-[1.1] mb-8">
+              {post.frontmatter.title}
+            </h1>
+          </header>
+
+          {/* Body Content with "Prose" */}
+          <div className="prose prose-slate prose-lg max-w-none 
+            prose-headings:text-slate-900 
+            prose-headings:tracking-tight
+            prose-p:leading-8 
+            prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline
+            prose-img:rounded-2xl
+            prose-strong:text-slate-900">
+            <MDXRemote source={post.content} />
+          </div>
+
+          {/* Modern Footer CTA */}
+          <footer className="mt-20 pt-10 border-t border-slate-100">
+            <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100 flex flex-col md:flex-row items-center justify-between gap-6">
+              <div>
+                <h4 className="text-lg font-bold text-slate-900">Want more tips?</h4>
+                <p className="text-slate-600 text-sm">Join our newsletter for weekly NEET strategies.</p>
+              </div>
+              <button className="bg-slate-900 text-white px-6 py-3 rounded-xl font-semibold hover:bg-slate-800 transition-all">
+                Subscribe Now
+              </button>
+            </div>
+          </footer>
+        </article>
+      </main>
+    </>
   );
 }

@@ -131,6 +131,7 @@ export default function Footer() {
             <li><Link href="/analytics" className="hover:text-blue-600 transition">Performance Analytics</Link></li>
             <li><Link href="/neet-pyq-pdf" className="hover:text-blue-600 transition">Download PDF Guides</Link></li>
             <li><Link href="/about" className="hover:text-blue-600 transition">About NEETest</Link></li>
+            <li><Link href="/blog" className="hover:text-blue-600 transition">Blog</Link></li>
             <li><Link href="/contact" className="hover:text-blue-600 transition">Contact Us</Link></li>
           </ul>
         </div>
