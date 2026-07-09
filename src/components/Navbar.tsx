@@ -56,8 +56,12 @@ export default function Navbar() {
                 <div className="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center font-black text-xl text-white shadow-md shadow-blue-200 group-hover:bg-blue-700 transition-colors">
                   N
                 </div>
-                <span className="font-extrabold text-xl tracking-tight text-slate-900">
+                {/* <span className="font-extrabold text-xl tracking-tight text-slate-900">
                   NEETPrep<span className="text-blue-600">Engine</span>
+                </span> */}
+
+                <span className="font-extrabold text-xl tracking-tight text-slate-900">
+                  NEET<span className="text-blue-600">est</span>
                 </span>
               </Link>
 
@@ -162,9 +166,9 @@ export default function Navbar() {
               </button>
             </div> */}
 
-            
 
-            
+
+
 
             {/* <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 z-50 pb-safe">
             <div className="flex justify-around items-center h-16 px-2">
