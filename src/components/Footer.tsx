@@ -140,6 +140,7 @@ export default function Footer() {
         <div>
           <h3 className="font-bold text-slate-900 mb-4">Legal</h3>
           <ul className="space-y-2 text-sm text-slate-600">
+            <li><Link href="faqs" className="hover:text-blue-600 transition">FAQs</Link></li>
             <li><Link href="/privacy" className="hover:text-blue-600 transition">Privacy Policy</Link></li>
             <li><Link href="/terms" className="hover:text-blue-600 transition">Terms of Service</Link></li>
             <li className="pt-2 text-[11px] text-slate-400">© 2026 NEETest. All rights reserved.</li>
