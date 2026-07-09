@@ -135,11 +135,11 @@ export default function HomePage() {
       </section>
 
       {/* COMPLIANCE FOOTER */}
-      <footer className="border-t border-slate-200 bg-white py-8 text-center text-xs font-bold uppercase tracking-wider text-slate-400 w-full mt-auto">
+      {/* <footer className="border-t border-slate-200 bg-white py-8 text-center text-xs font-bold uppercase tracking-wider text-slate-400 w-full mt-auto">
         <div className="max-w-7xl mx-auto px-4">
           &copy; {new Date().getFullYear()} NEETPrep Engine. All structural parameters protected. Designed for verified medical candidates.
         </div>
-      </footer>
+      </footer> */}
 
     </div>
   );
