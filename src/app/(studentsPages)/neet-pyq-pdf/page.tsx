@@ -12,6 +12,7 @@ export const metadata: Metadata = {
   alternates: { canonical: 'https://neetest.com/neet-pyq-pdf' },
 };
 
+
 const PyqArchive: React.FC = () => {
   // 2. SEO: JSON-LD Schema for Rich Snippets
   const jsonLd = {

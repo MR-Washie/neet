@@ -10,7 +10,7 @@
 // export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
 //   const { slug } = await params;
 //   const post = getPostBySlug(slug);
-  
+
 //   if (!post) return { title: "Not Found" };
 
 //   return {
@@ -51,7 +51,7 @@
 //         type="application/ld+json"
 //         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
 //       />
-      
+
 //       <main className="min-h-screen pt-16 pb-24 px-6">
 //         <article className="max-w-3xl mx-auto">
 //           {/* Header */}
@@ -115,7 +115,7 @@ export default async function BlogPost({ params }: { params: Params }) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      
+
       <main className="bg-white min-h-screen">
         {/* Decorative subtle background element */}
         <div className="absolute top-0 w-full h-[400px] bg-gradient-to-b from-slate-50 to-white -z-10" />
@@ -131,7 +131,7 @@ export default async function BlogPost({ params }: { params: Params }) {
                 {post.frontmatter.publishedAt}
               </time>
             </div>
-            
+
             <h1 className="text-4xl md:text-6xl font-extrabold text-slate-900 tracking-tight leading-[1.1] mb-8">
               {post.frontmatter.title}
             </h1>
@@ -149,7 +149,7 @@ export default async function BlogPost({ params }: { params: Params }) {
           </div>
 
           {/* Modern Footer CTA */}
-          <footer className="mt-20 pt-10 border-t border-slate-100">
+          {/* <footer className="mt-20 pt-10 border-t border-slate-100">
             <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100 flex flex-col md:flex-row items-center justify-between gap-6">
               <div>
                 <h4 className="text-lg font-bold text-slate-900">Want more tips?</h4>
@@ -158,6 +158,31 @@ export default async function BlogPost({ params }: { params: Params }) {
               <button className="bg-slate-900 text-white px-6 py-3 rounded-xl font-semibold hover:bg-slate-800 transition-all">
                 Subscribe Now
               </button>
+            </div>
+          </footer> */}
+          <footer className="mt-20 pt-10 border-t border-slate-100">
+            <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100 flex flex-col md:flex-row items-center justify-between gap-6">
+              <div>
+                <h4 className="text-lg font-bold text-slate-900">Want more tips?</h4>
+                <p className="text-slate-600 text-sm">Join our newsletter for weekly NEET strategies.</p>
+              </div>
+
+              {/* Wrap button in a form and add an input field */}
+              <form action="YOUR_SERVICE_URL_HERE" method="POST" className="flex gap-2">
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Enter your email"
+                  required
+                  className="px-4 py-3 rounded-xl border border-slate-200 outline-none"
+                />
+                <button
+                  type="submit"
+                  className="bg-slate-900 text-white px-6 py-3 rounded-xl font-semibold hover:bg-slate-800 transition-all"
+                >
+                  Subscribe Now
+                </button>
+              </form>
             </div>
           </footer>
         </article>
