@@ -4,13 +4,63 @@ description: "How to structure your study routine for a 650+ score in NEET 2026.
 publishedAt: "2026-07-09"
 ---
 
-# Master Your NEET 2026 Journey
+{/* Hero Section */}
+<div className="relative py-16 px-8 bg-slate-900 rounded-3xl text-white shadow-2xl mb-12 text-center">
+  <h1 className="text-4xl md:text-6xl font-extrabold mb-4">Master Your NEET 2026 Journey</h1>
+  <div className="text-slate-400 text-lg md:text-xl font-medium max-w-2xl mx-auto">
+    Success in NEET 2026 requires more than just hard work—it requires a precision-engineered strategy.
+  </div>
+</div>
 
-To succeed in NEET 2026, you need more than just hard work; you need **strategy**.
+{/* Focus Areas Grid */}
+<section className="my-12">
+  <h2 className="text-3xl font-bold text-gray-900 mb-10 text-center">Key Focus Areas</h2>
+  <div className="grid md:grid-cols-3 gap-8">
+    
+    <div className="p-8 bg-white border border-gray-100 rounded-3xl shadow-sm hover:shadow-xl transition-all">
+      <div className="text-4xl mb-4">📖</div>
+      <h3 className="font-bold text-xl text-gray-900 mb-3">NCERT Mastery</h3>
+      <div className="text-gray-600">The foundation of your success. 90% of Biology questions are derived directly from NCERT.</div>
+    </div>
 
-## Key Focus Areas
-*   **NCERT Mastery:** 90% of Biology questions come directly from NCERT.
-*   **Physics Practice:** Focus on mechanics and electrostatics.
-*   **Consistent PYQs:** Solve at least one Previous Year Question paper every week.
+    <div className="p-8 bg-white border border-gray-100 rounded-3xl shadow-sm hover:shadow-xl transition-all">
+      <div className="text-4xl mb-4">⚡</div>
+      <h3 className="font-bold text-xl text-gray-900 mb-3">Physics Practice</h3>
+      <div className="text-gray-600">Focus your problem-solving efforts on high-weightage topics like mechanics and electrostatics.</div>
+    </div>
 
-Remember, consistency beats intensity every time!
+    <div className="p-8 bg-white border border-gray-100 rounded-3xl shadow-sm hover:shadow-xl transition-all">
+      <div className="text-4xl mb-4">🗓️</div>
+      <h3 className="font-bold text-xl text-gray-900 mb-3">Consistent PYQs</h3>
+      <div className="text-gray-600">Simulation is key. Commit to solving at least one full Previous Year Question paper every week.</div>
+    </div>
+    
+  </div>
+</section>
+
+{/* Motivational Quote */}
+<div className="my-16 p-8 bg-amber-50 border-l-8 border-amber-400 rounded-xl">
+  <p className="text-xl font-medium text-amber-900 italic">
+    "Consistency beats intensity every time!"
+  </p>
+</div>
+
+{/* Newsletter Subscription Footer */}
+<footer className="mt-20 pt-10 border-t border-slate-100">
+  <div className="bg-slate-900 p-8 md:p-10 rounded-3xl border border-slate-800 flex flex-col md:flex-row items-center justify-between gap-6">
+    <div className="text-white">
+      <h4 className="text-xl font-bold mb-2">Want more NEET updates?</h4>
+      <div className="text-slate-400 text-sm">Join our newsletter for weekly NEET strategies.</div>
+    </div>
+    <form action="YOUR_ENDPOINT_HERE" className="flex gap-2 w-full md:w-auto">
+      <input 
+        type="email" 
+        placeholder="Enter your email" 
+        className="px-4 py-3 rounded-xl border border-slate-700 bg-slate-800 text-white w-full md:w-64 outline-none focus:border-amber-500"
+      />
+      <button className="bg-amber-500 text-white px-6 py-3 rounded-xl font-semibold hover:bg-amber-400 transition-all whitespace-nowrap">
+        Subscribe
+      </button>
+    </form>
+  </div>
+</footer>
